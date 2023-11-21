@@ -32,16 +32,16 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout code # checking our the code at current commit that triggers the workflow
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Cache dependency # caching dependency will make our build faster.
-        uses: actions/cache@v3 # for more info checkout pip section documentation at https://github.com/actions/cache
+        uses: actions/cache@v2 # for more info checkout pip section documentation at https://github.com/actions/cache
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
       - name: Setup python environment # setting python environment to 3.x
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v2
         with:
           python-version: '3.x' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
       - name: Check Python version # checking the python version to see if 3.x is installed.
@@ -59,9 +59,9 @@ jobs:
     if: ${{ github.event_name == 'push' }} # will be fired if the trigger event is a push event.
     steps:
       - name: Checkout Code # checking out code.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v1
         env:
           app_name: app
         with:
@@ -77,7 +77,7 @@ jobs:
     if: ${{ github.event_name == 'push' }} # will be fire if the trigger event is a push event.
     steps:
       - name: Checkout code # checking out code.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master # settings up gcloud cli in our job machine.
         with:
           version: '270.0.0'
